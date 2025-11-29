@@ -24,9 +24,7 @@ secret = {SECRET}
 
 Computation must follow all constraints, formats, and limits exactly as written in each quiz page. Do not assume missing information. Only act on what is retrieved.
 
-Output protocol: After solving each chain of quizzes and when no further URLs remain, print: END.
-
-            """
+Output protocol: After solving each chain of quizzes and when no further URLs remain, print: END."""
             
             user_prompt = f"Question: {question_text}\n\n{f'Context: {context}' if context else ''}\n\nAnalyze this question and provide a structured plan to solve it."
             
@@ -67,4 +65,5 @@ Output protocol: After solving each chain of quizzes and when no further URLs re
         except Exception as e:
             logger.error(f"Error solving with data: {str(e)}")
             raise
+
 
