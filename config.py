@@ -15,7 +15,7 @@ class Config:
     
     # Server Configuration
     HOST = os.getenv('HOST', '0.0.0.0')
-    PORT = int(os.getenv('PORT', 5000))
+    PORT = 5000
     DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
     
     # Timeout Configuration
@@ -36,3 +36,4 @@ class Config:
             raise ValueError("OPENAI_API_KEY environment variable is required")
         if not Config.SECRET_KEY or Config.SECRET_KEY == 'your-secret-from-google-form':
             print("WARNING: Using default SECRET_KEY. Please update in .env file")
+
