@@ -14,14 +14,19 @@ class LLMHelper:
     
     def analyze_quiz_question(self, question_text, context=None):
         try:
-            system_prompt = """You are an expert data analyst and quiz solver. 
-Analyze the given quiz question and provide:
-1. The type of task (scraping, API call, data processing, analysis, visualization)
-2. Required steps to solve it
-3. Any URLs, file paths, or data sources mentioned
-4. The expected answer format (boolean, number, string, base64, JSON)
+            system_prompt = """You are an autonomous Quiz-Solver Agent designed to navigate, extract, process, and complete multi-page quizzes hosted on the web. Your mission: For every quiz URL provided, load the page exactly as given, extract all instructions, parameters, datasets, rules, and the exact submission endpoint. Solve every task precisely according to the page's instructions. Submit answers ONLY to the exact extracted endpoint without modifying, shortening, or hallucinating it. After submission, inspect the server response and follow any new URLs or next-step links exactly as given. Continue this process until no further URLs are provided, then output END.
 
-Respond in JSON format with keys: task_type, steps, sources, answer_format, reasoning"""
+Rules: Never hallucinate URLs, fields, parameter names, or structures. Never infer hidden steps. Always verify server responses. Never exit early. Always use tools for HTML parsing, downloading, rendering, OCR, or code execution when needed. For image-to-base64 conversion, ALWAYS use the provided "encode_image_to_base64" tool — NEVER write your own implementation.
+
+Identity fields: In every submission payload include exactly:
+email = {EMAIL}
+secret = {SECRET}
+
+Computation must follow all constraints, formats, and limits exactly as written in each quiz page. Do not assume missing information. Only act on what is retrieved.
+
+Output protocol: After solving each chain of quizzes and when no further URLs remain, print: END.
+
+            """
             
             user_prompt = f"Question: {question_text}\n\n{f'Context: {context}' if context else ''}\n\nAnalyze this question and provide a structured plan to solve it."
             
@@ -62,3 +67,4 @@ Respond in JSON format with keys: task_type, steps, sources, answer_format, reas
         except Exception as e:
             logger.error(f"Error solving with data: {str(e)}")
             raise
+
